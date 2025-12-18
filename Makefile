@@ -1,3 +1,5 @@
+data_dir =	./src/requirements/mariadb/data \
+			./src/requirements/wordpress/src
 
 all : build up
 
@@ -20,30 +22,33 @@ secrets:
 		echo "Generated wp_user_password.txt"; \
 	fi
 
-build: secrets
+hosts:
+	@cat /etc/hosts | grep "127.0.0.1 seongkim.42.fr" || sudo sh -c 'echo "hosts에 도메인 추가" && echo "127.0.0.1 seongkim.42.fr" >> /etc/hosts'
+
+mkdir: 
+	@mkdir -p $(data_dir)
+
+build: secrets mkdir hosts
 	@docker compose -f src/docker-compose.yml build
 
-up: secrets
+up: secrets mkdir hosts
 	@docker compose -f src/docker-compose.yml up -d
 
 down:
 	@docker compose -f src/docker-compose.yml down -vt 0
 
-restart: down up
+restart: 
+	@docker compose -f src/docker-compose.yml restart
 
-rm:
-	@docker compose -f src/docker-compose.yml rm -f
-
-fclean : down rm
-	@sudo rm -rf ./src/requirements/mariadb/data/*
-	@sudo rm -rf ./src/requirements/wordpress/src/*
-
-fclean-secrets: fclean
+remove-secrets: fclean
 	@rm -rf secrets/*.txt
 	@echo "Removed all secret files"
 	
-prune: fclean
-	docker system prune -a --volumes
+clean : down
+	@sudo rm -rf $(data_dir)
+
+fclean: clean remove-secrets
+	@docker system prune -a --volumes
 
 log :
 	@docker compose -f src/docker-compose.yml logs -f --tail=100
@@ -65,4 +70,4 @@ status:
 		echo "└───────────────┴───────────────────────┴───────────────────────┴───────────────┘"; \
 	'
 	
-.PHONY: build up down restart stop rm fclean fclean-secrets prune ps exec log status secrets
+.PHONY: secrets hosts mkdir build up down restart remove-secrets clean fclean log status
