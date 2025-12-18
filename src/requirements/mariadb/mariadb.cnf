@@ -1,0 +1,7 @@
+[client]
+socket = /tmp/mysqld.sock
+
+[mysqld]
+bind-address = 0.0.0.0
+socket = /tmp/mysqld.sock
+pid-file = /tmp/mysqld.pid
