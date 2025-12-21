@@ -5,6 +5,7 @@ volumes:
       type: none
       device: ./requirements/wordpress/src/
       o: bind
+
   mariadb_data:
     driver: local
     driver_opts:

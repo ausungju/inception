@@ -1,26 +1,21 @@
 data_dir =	./srcs/requirements/mariadb/data \
 			./srcs/requirements/wordpress/src
 
+secrets_file =	./secrets/mariadb_root_password.txt \
+				./secrets/mariadb_user_pwd.txt \
+				./secrets/wp_admin_password.txt \
+				./secrets/wp_user_password.txt
+
 all : build up
 
-secrets:
+secrets: 
 	@mkdir -p secrets
-	@if [ ! -f secrets/mariadb_root_password.txt ]; then \
-		openssl rand -base64 32 > secrets/mariadb_root_password.txt; \
-		echo "Generated mariadb_root_password.txt"; \
-	fi
-	@if [ ! -f secrets/mariadb_user_pwd.txt ]; then \
-		openssl rand -base64 32 > secrets/mariadb_user_pwd.txt; \
-		echo "Generated mariadb_user_pwd.txt"; \
-	fi
-	@if [ ! -f secrets/wp_admin_password.txt ]; then \
-		openssl rand -base64 32 > secrets/wp_admin_password.txt; \
-		echo "Generated wp_admin_password.txt"; \
-	fi
-	@if [ ! -f secrets/wp_user_password.txt ]; then \
-		openssl rand -base64 32 > secrets/wp_user_password.txt; \
-		echo "Generated wp_user_password.txt"; \
-	fi
+
+	@for file in $(secrets_file); do \
+		if [ ! -f $$file ]; then \
+			openssl rand -base64 32 > $$file; \
+		fi; \
+	done
 
 hosts:
 	@cat /etc/hosts | grep "127.0.0.1 seongkim.42.fr" || sudo sh -c 'echo "hosts에 도메인 추가" && echo "127.0.0.1 seongkim.42.fr" >> /etc/hosts'
@@ -39,16 +34,13 @@ down:
 
 restart: 
 	@docker compose -f srcs/docker-compose.yml restart
-
-remove-secrets: fclean
-	@rm -rf secrets/*.txt
-	@echo "Removed all secret files"
 	
 clean : down
 	@sudo rm -rf $(data_dir)
 
-fclean: clean remove-secrets
+fclean: clean
 	@docker system prune -a --volumes
+	@rm -rf secrets
 
 log :
 	@docker compose -f srcs/docker-compose.yml logs -f --tail=100

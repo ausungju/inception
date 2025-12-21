@@ -2,7 +2,6 @@
 
 set -e
 
-# Load secrets
 MARIADB_USER_PWD=$(cat /run/secrets/mariadb_user_pwd)
 WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
 WP_USER_PASSWORD=$(cat /run/secrets/wp_user_password)
