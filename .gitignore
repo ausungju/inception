@@ -1,0 +1,4 @@
+srcs/requirements/mariadb/data/*
+srcs/requirements/wordpress/src/*
+
+secrets
