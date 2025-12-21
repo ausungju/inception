@@ -9,7 +9,6 @@ RUN apt-get update && \
 COPY mariadb.cnf /etc/mysql/mariadb.conf.d/99-custom.cnf
 
 RUN rm -rf /var/lib/mysql/*
-
 COPY init.sh /usr/local/bin/init-db.sh
 RUN chmod +x /usr/local/bin/init-db.sh
 

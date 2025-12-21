@@ -1,5 +1,5 @@
-data_dir =	./src/requirements/mariadb/data \
-			./src/requirements/wordpress/src
+data_dir =	./srcs/requirements/mariadb/data \
+			./srcs/requirements/wordpress/src
 
 all : build up
 
@@ -29,16 +29,16 @@ mkdir:
 	@mkdir -p $(data_dir)
 
 build: secrets mkdir hosts
-	@docker compose -f src/docker-compose.yml build
+	@docker compose -f srcs/docker-compose.yml build
 
 up: secrets mkdir hosts
-	@docker compose -f src/docker-compose.yml up -d
+	@docker compose -f srcs/docker-compose.yml up -d
 
 down:
-	@docker compose -f src/docker-compose.yml down -vt 0
+	@docker compose -f srcs/docker-compose.yml down -vt 0
 
 restart: 
-	@docker compose -f src/docker-compose.yml restart
+	@docker compose -f srcs/docker-compose.yml restart
 
 remove-secrets: fclean
 	@rm -rf secrets/*.txt
@@ -51,13 +51,13 @@ fclean: clean remove-secrets
 	@docker system prune -a --volumes
 
 log :
-	@docker compose -f src/docker-compose.yml logs -f --tail=100
+	@docker compose -f srcs/docker-compose.yml logs -f --tail=100
 
 status: 
 	@bash -c '\
-		NGINX_COMM=$$(docker compose -f src/docker-compose.yml exec nginx bash -c "ps -o comm= -p 1"); \
-		MARIADB_COMM=$$(docker compose -f src/docker-compose.yml exec mariadb bash -c "ps -o comm= -p 1"); \
-		WORDPRESS_COMM=$$(docker compose -f src/docker-compose.yml exec wordpress bash -c "ps -o comm= -p 1"); \
+		NGINX_COMM=$$(docker compose -f srcs/docker-compose.yml exec nginx bash -c "ps -o comm= -p 1"); \
+		MARIADB_COMM=$$(docker compose -f srcs/docker-compose.yml exec mariadb bash -c "ps -o comm= -p 1"); \
+		WORDPRESS_COMM=$$(docker compose -f srcs/docker-compose.yml exec wordpress bash -c "ps -o comm= -p 1"); \
 		\
 		echo "┌───────────────────────────────────────────────────────────────────────────────┐"; \
 		echo "│                             Inception Services                                │"; \
@@ -69,5 +69,5 @@ status:
 		printf "│ %-13s │ %-21s │ %-21s │ %-13s │\n" "wordpress" "wordpress_container" "wordpress:latest" "$$WORDPRESS_COMM"; \
 		echo "└───────────────┴───────────────────────┴───────────────────────┴───────────────┘"; \
 	'
-	
+
 .PHONY: secrets hosts mkdir build up down restart remove-secrets clean fclean log status
