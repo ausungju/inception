@@ -56,9 +56,9 @@ status:
 		echo "├───────────────┬───────────────────────┬───────────────────────┬───────────────┤"; \
 		echo "│    Service    │         Name          │        Image          │     PID 1     │"; \
 		echo "├───────────────┼───────────────────────┼───────────────────────┼───────────────┤"; \
-		printf "│ %-13s │ %-21s │ %-21s │ %-13s │\n" "nginx" "nginx_container" "nginx:latest" "$$NGINX_COMM"; \
-		printf "│ %-13s │ %-21s │ %-21s │ %-13s │\n" "mariadb" "mariadb_container" "mariadb:latest" "$$MARIADB_COMM"; \
-		printf "│ %-13s │ %-21s │ %-21s │ %-13s │\n" "wordpress" "wordpress_container" "wordpress:latest" "$$WORDPRESS_COMM"; \
+		printf "│ %-13s │ %-21s │ %-21s │ %-13s │\n" "nginx" "nginx" "nginx:latest" "$$NGINX_COMM"; \
+		printf "│ %-13s │ %-21s │ %-21s │ %-13s │\n" "mariadb" "mariadb" "mariadb:latest" "$$MARIADB_COMM"; \
+		printf "│ %-13s │ %-21s │ %-21s │ %-13s │\n" "wordpress" "wordpress" "wordpress:latest" "$$WORDPRESS_COMM"; \
 		echo "└───────────────┴───────────────────────┴───────────────────────┴───────────────┘"; \
 	'
 
