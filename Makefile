@@ -6,7 +6,7 @@ secrets_file =	./secrets/mariadb_root_password.txt \
 				./secrets/wp_admin_password.txt \
 				./secrets/wp_user_password.txt
 
-all : build up
+all : up
 
 secrets: 
 	@mkdir -p secrets

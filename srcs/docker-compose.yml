@@ -31,7 +31,8 @@ services:
   nginx:
     build: ./requirements/nginx
     image: nginx:latest
-    container_name: nginx_container
+    pull_policy: never
+    container_name: nginx
     depends_on:
       wordpress:
         condition: service_healthy
@@ -45,7 +46,8 @@ services:
   wordpress:
     build: ./requirements/wordpress
     image: wordpress:latest
-    container_name: wordpress_container
+    pull_policy: never
+    container_name: wordpress
     depends_on:
       mariadb:
         condition: service_healthy
@@ -68,7 +70,8 @@ services:
   mariadb:
     build: ./requirements/mariadb
     image: mariadb:latest
-    container_name: mariadb_container
+    pull_policy: never
+    container_name: mariadb
     env_file:
       - .env
     secrets:
